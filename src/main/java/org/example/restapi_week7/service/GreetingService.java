@@ -1,30 +1,32 @@
 package org.example.restapi_week7.service;
+
+import org.example.restapi_week7.model.Greeting;
+import org.example.restapi_week7.repository.GreetingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class GreetingService {
 
-    public String generateGreeting(String firstName, String lastName) {
-        if (firstName != null && lastName != null) {
-            return "Hello " + firstName + " " + lastName;
-        } else if (firstName != null) {
-            return "Hello " + firstName;
-        } else if (lastName != null) {
-            return "Hello " + lastName;
-        } else {
-            return "Hello World";
-        }
+    private static final String template = "Hello %s";
+    private final GreetingRepository greetingRepository;
+
+    @Autowired
+    public GreetingService(GreetingRepository greetingRepository) {
+        this.greetingRepository = greetingRepository;
     }
 
-    public String postGreeting() {
-        return "Hello from POST Request By Ayush";
+    public Greeting saveGreeting(String name) {
+        String message = (name == null || name.trim().isEmpty())
+                ? "Hello World"
+                : String.format(template, name.trim());
+        return greetingRepository.save(new Greeting(message));
     }
 
-    public String putGreeting() {
-        return "Hello from PUT Request By Ayush";
-    }
-
-    public String deleteGreeting() {
-        return "Hello from DELETE By Ayush";
+    public Greeting getGreeting(Long id) {
+        return greetingRepository.findById(id).orElse(null);
     }
 }
+

@@ -1,47 +1,28 @@
 package org.example.restapi_week7.Controller;
 
+import org.example.restapi_week7.model.Greeting;
 import org.example.restapi_week7.service.GreetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/greeting")
 public class GreetingController {
 
+    private final GreetingService greetingService;
+
     @Autowired
-    private GreetingService greetingService;
-
-    @GetMapping
-    public Map<String, String> getGreeting(
-            @RequestParam(required = false) String firstName,
-            @RequestParam(required = false) String lastName
-    ) {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", greetingService.generateGreeting(firstName, lastName));
-        return response;
+    public GreetingController(GreetingService greetingService) {
+        this.greetingService = greetingService;
     }
 
-    @PostMapping
-    public Map<String, String> postGreeting() {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", greetingService.postGreeting());
-        return response;
+    @PostMapping("/save")
+    public Greeting saveGreeting(@RequestBody String message) {
+        return greetingService.saveGreeting(message);
     }
 
-    @PutMapping
-    public Map<String, String> putGreeting() {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", greetingService.putGreeting());
-        return response;
-    }
-
-    @DeleteMapping
-    public Map<String, String> deleteGreeting() {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", greetingService.deleteGreeting());
-        return response;
+    @GetMapping("/{id}")
+    public Greeting getGreeting(@PathVariable Long id) {
+        return greetingService.getGreeting(id);
     }
 }
-
