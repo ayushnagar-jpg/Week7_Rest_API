@@ -33,6 +33,7 @@ public class GreetingService {
     public List<Greeting> getAllGreetings() {
         return greetingRepository.findAll();
     }
+
     public Greeting updateGreeting(Long id, Greeting newGreetingData) {
         return greetingRepository.findById(id)
                 .map(greeting -> {
@@ -42,5 +43,12 @@ public class GreetingService {
                 .orElseThrow(() -> new RuntimeException("Greeting not found with id: " + id));
     }
 
+    // UC8: Delete a greeting by ID
+    public void deleteGreeting(Long id) {
+        Greeting greeting = greetingRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Greeting not found with id: " + id));
+        greetingRepository.delete(greeting);
+    }
 }
+
 
