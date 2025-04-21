@@ -3,6 +3,7 @@ package org.example.restapi_week7.Controller;
 import org.example.restapi_week7.model.Greeting;
 import org.example.restapi_week7.service.GreetingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,4 +36,13 @@ public class GreetingController {
     public List<Greeting> getAllGreetings() {
         return greetingService.getAllGreetings();
     }
+
+    //UC7
+    @PutMapping("/{id}")
+    public ResponseEntity<Greeting> updateGreeting(@PathVariable Long id, @RequestBody Greeting updatedGreeting) {
+        Greeting greeting = greetingService.updateGreeting(id, updatedGreeting);
+        return ResponseEntity.ok(greeting);
+    }
+
+
 }
