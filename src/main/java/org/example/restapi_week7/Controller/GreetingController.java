@@ -5,6 +5,8 @@ import org.example.restapi_week7.service.GreetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/greeting")
 public class GreetingController {
@@ -15,14 +17,22 @@ public class GreetingController {
     public GreetingController(GreetingService greetingService) {
         this.greetingService = greetingService;
     }
-    //UC4:
+
+    // UC4:
     @PostMapping("/save")
     public Greeting saveGreeting(@RequestBody String message) {
         return greetingService.saveGreeting(message);
     }
-    //UC5:
+
+    // UC5:
     @GetMapping("/{id}")
     public Greeting getGreeting(@PathVariable Long id) {
         return greetingService.getGreeting(id);
+    }
+
+    // ✅ UC6:
+    @GetMapping("/all")
+    public List<Greeting> getAllGreetings() {
+        return greetingService.getAllGreetings();
     }
 }
